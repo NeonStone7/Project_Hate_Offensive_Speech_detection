@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
-from sklearn.feature_extraction.text import TfidfVectorizer
 import re
 from nltk.stem import PorterStemmer
 
@@ -56,10 +55,10 @@ def predict_hate_speech(text):
     # Make predictions using the trained model
     prediction = model.predict(preprocessed_text['tweet'])
                 
-    if pred == 0:
-            return f'{pred}: Speech does not contain hateful or offensive speech'
+    if prediction == 0:
+            return f'{prediction}: Speech does not contain hateful or offensive speech'
             
-    return f'{pred}: Speech contains hateful or offensive speech.'
+    return f'{prediction}: Speech contains hateful or offensive speech.'
 
 # Streamlit app
 def main():
