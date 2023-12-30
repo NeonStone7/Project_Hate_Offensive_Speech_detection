@@ -3,18 +3,13 @@ import pandas as pd
 import numpy as np
 import joblib
 from sklearn.feature_extraction.text import TfidfVectorizer
+import re
+from nltk.stem import PorterStemmer
 
-
-filename = 'Hate_and_Offensive_speech_model.pkl'
-filename_pre = 'Hate_and_Offensive_speech_preprocessor.pkl'
-
-
-#load model
-model = joblib.load(filename)
-preprocessor = joblib.load(filename_pre)
-          
-            
-def placeholder_tokenize(text):
+def preprocess_text(text):
+    
+    """Preprocess text"""
+    
     
     text = text.lower()
     
@@ -38,24 +33,29 @@ def placeholder_tokenize(text):
 
     # return words
     text = ' '.join([x for x in re.findall(r'\w+\s+', text)])
+        
+    stemmer = PorterStemmer()
     
-    return text
-     
-       
+    value =  ' '.join([stemmer.stem(word) for word in text.split()])
+    
+    df = pd.DataFrame(value, index = [0], columns = ['tweet'])
+    
+    return df
+
+filename = 'Hate_and_Offensive_speech_model.pkl'
+
+
+#load model
+model = joblib.load(filename)
 
 def predict_hate_speech(text):
             
     # Preprocess the input text
-    preprocessed_text = placeholder_tokenize(text)
-    
-    # Vectorize the preprocessed text
-    vectorized_text = preprocessor.transform([preprocessed_text])
-    
+    preprocessed_text = preprocess_text(text)
+        
     # Make predictions using the trained model
-    prediction = model.predict(vectorized_text)
-    
-    pred =  prediction[0]
-            
+    prediction = model.predict(preprocessed_text['tweet'])
+                
     if pred == 0:
             return f'{pred}: Speech does not contain hateful or offensive speech'
             
@@ -68,7 +68,10 @@ def main():
     st.title("Hate speech and Offensive speech Detection")
 
     # description
-    st.markdown("This model was trained on 24783 tweets to detect whether a model contains hate or offensive speech"
+    st.markdown("""This model was trained on 24783 tweets to detect whether a model contains hate or offensive speech.
+                Train Score: 99%
+                Test auc: 70%
+                Validation auc: 77%""")
 
     
     # Input text from the user
