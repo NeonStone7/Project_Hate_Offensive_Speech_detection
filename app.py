@@ -67,13 +67,13 @@ def main():
     st.title("Hate speech and Offensive speech Detection")
 
     # description
-    st.markdown("""This model was trained on 24783 tweets to detect whether a model contains hate or offensive speech.      
+    st.markdown("""This model was trained on 24783 tweets to detect whether text contains hate or offensive speech.      
                  --- > Train Score: 99%
                  ---> Test auc: 70%
                  ---> Validation auc: 77%""")
 
-    st.markdown("""Note: Model is overfitting and may not generalize well ☹.\n
-                To do: Model generalization will be improved""")
+    st.markdown("""Note: Model is overfitting and may not generalize well ☹. 
+    To do: Model generalization will be improved""")
 
     
     # Input text from the user
